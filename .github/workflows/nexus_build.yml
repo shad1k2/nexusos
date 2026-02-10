@@ -23,12 +23,11 @@ jobs:
 
       - name: Build My OS
         run: |
-          # Переносим твой конфиг в папку движка
           cp .config buildroot_engine/.config
           cd buildroot_engine
-          # Применяем настройки и жарим на все ядра
           make olddefconfig
-          make -j$(nproc)
+          # Добавляем флаг, который разрешает старые стандарты C
+          make -j$(nproc) BR2_EXTERNAL_CFLAGS="-std=gnu89 -fpermissive"
 
       - name: Upload Finished Image
         uses: actions/upload-artifact@v4
